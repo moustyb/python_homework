@@ -1,5 +1,6 @@
 import csv
 import os
+from datetime import datetime
 import custom_module
 
 # ===================== TASK 2 =====================
@@ -21,16 +22,15 @@ def read_employees():
         trace_back = traceback.extract_tb(e.__traceback__)
         stack_trace = []
         for trace in trace_back:
-            stack_trace.append(f'File : {trace[0]}, Line : {trace[1]}, Func.Name : {trace[2]}, Message : {trace[3]}')
+            stack_trace.append(f'File : {trace[0]} , Line : {trace[1]}, Func.Name : {trace[2]}, Message : {trace[3]}')
         print(f"Exception type: {type(e).__name__}")
         message = str(e)
         if message:
             print(f"Exception message: {message}")
         print(f"Stack trace: {stack_trace}")
-        # Re-raise so pytest can see it if needed
         raise
 
-employees = read_employees()   # This runs when the module is imported (required for tests)
+employees = read_employees()   # global variable required for tests
 
 # ===================== TASK 3 =====================
 def column_index(col_name):
@@ -52,8 +52,7 @@ def employee_find(employee_id):
 
 # ===================== TASK 6 =====================
 def employee_find_2(employee_id):
-    matches = list(filter(lambda row: int(row[employee_id_column]) == employee_id,
-                          employees["rows"]))
+    matches = list(filter(lambda row: int(row[employee_id_column]) == employee_id, employees["rows"]))
     return matches
 
 # ===================== TASK 7 =====================
@@ -98,7 +97,7 @@ def read_minutes():
                 if i == 0:
                     data['fields'] = row
                 else:
-                    rows.append(tuple(row))   # convert to tuple as required
+                    rows.append(tuple(row))   # must be tuple for set
         data['rows'] = rows
         return data
 
@@ -106,21 +105,44 @@ def read_minutes():
     minutes2 = read_one_csv('../csv/minutes2.csv')
     return minutes1, minutes2
 
-# Optional: demo calls (these run when you execute the file directly)
+minutes1, minutes2 = read_minutes()   # global variables
+
+# ===================== TASK 13 =====================
+def create_minutes_set():
+    set1 = set(minutes1["rows"])
+    set2 = set(minutes2["rows"])
+    return set1.union(set2)
+
+minutes_set = create_minutes_set()
+
+# ===================== TASK 14 =====================
+def create_minutes_list():
+    minutes_list = list(minutes_set)
+    return list(map(lambda x: (x[0], datetime.strptime(x[1], "%B %d, %Y")), minutes_list))
+
+minutes_list = create_minutes_list()
+
+# ===================== TASK 15 =====================
+def write_sorted_list():
+    # Sort by datetime (second element of tuple)
+    minutes_list.sort(key=lambda x: x[1])
+    
+    # Convert datetime back to string for CSV
+    sorted_data = list(map(lambda x: (x[0], x[1].strftime("%B %d, %Y")), minutes_list))
+    
+    # Write to minutes.csv
+    with open('./minutes.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(minutes1['fields'])          # header row
+        writer.writerows(sorted_data)
+    
+    return sorted_data
+
+# Run this function so the file gets created
+write_sorted_list()
+
+# Optional: print statements so you can see it works when you run the file
 if __name__ == "__main__":
-    print("Employees data loaded successfully.")
-    print("First name of row 0:", first_name(0))
-    print("Employee 1:", employee_find(1))
-    print("Sorted by last_name (first 3):", sort_by_last_name()[:3])
-    print("Employee dict example:", employee_dict(employees["rows"][0]))
-    print("All employees as dict of dicts:", all_employees_dict())
-    print("THISVALUE env var:", get_this_value())
-    
-    # Task 11 demo
-    set_that_secret("new secret value!")
-    print("Custom module secret:", custom_module.secret)
-    
-    # Task 12 demo
-    m1, m2 = read_minutes()
-    print("Minutes1 fields:", m1['fields'])
-    print("Minutes2 rows count:", len(m2['rows']))
+    print("✅ Assignment 2 loaded successfully!")
+    print("First employee name:", first_name(0))
+    print("THISVALUE:", get_this_value())
