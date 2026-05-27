@@ -1,0 +1,9 @@
+Task 1: robots.txt Review
+
+I reviewed the robots.txt file at https://durhamcountylibrary.org/robots.txt.
+
+The file allows general crawling for all user agents and only disallows access to the /staff/ section. 
+It also blocks many AI-related bots such as ChatGPT, GPTBot, ClaudeBot, PerplexityBot, and others. 
+Selenium is not listed as a blocked user agent, and the assignment does not access the /staff/ section.
+
+Therefore, the steps in this assignment do NOT violate the Durham County Library robots.txt policy.
