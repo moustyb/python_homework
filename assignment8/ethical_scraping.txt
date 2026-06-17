@@ -1,0 +1,8 @@
+1. Restricted Sections:
+Based on Wikipedia's robots.txt, sections restricted from crawling include internal utility paths like /w/, /wiki/Special:, /wiki/MediaWiki:, and various API or edit endpoints to prevent server overload from bots.
+
+2. Specific Rules for User Agents:
+Yes, there are specific rules. For example, some user agents (like certain aggressive crawlers or AI scrapers) are explicitly disallowed from accessing the entire site (User-agent: * Disallow: /), while others are granted partial access.
+
+3. Reflection on Ethical Scraping:
+Websites use robots.txt to communicate their crawling policies, protecting their servers from being overwhelmed by automated requests and safeguarding private or dynamic content. Adhering to it promotes ethical scraping by respecting the website owner's bandwidth, infrastructure costs, and privacy boundaries.
