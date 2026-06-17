@@ -1,0 +1,9 @@
+Challenges Faced and Resolutions:
+
+1. Dynamic Loading: The Durham Library page takes a moment to load all elements. I resolved this by adding a time.sleep(3) after driver.get() to ensure the DOM was fully rendered before searching for elements.
+
+2. CSS Selector Specificity: Initially, my selectors were too broad and grabbed unwanted text. I resolved this by using Chrome DevTools to "Copy Selector" on the exact title and author elements, making the scraping much more precise.
+
+3. XPath for OWASP: The OWASP page structure is complex. I had to experiment with different XPath queries in the browser console before finding one that reliably targeted the risk titles and their corresponding href attributes.
+
+4. Headless Mode: Running Selenium in headless mode was necessary to avoid GUI issues. I configured ChromeOptions with --headless and --disable-gpu flags to ensure smooth execution.
